@@ -1,0 +1,47 @@
+{% extends 'layout.html' %}
+{% block title %}Поиск{% endblock %}
+
+{% block content %}
+
+<!-- ХЛЕБНЫЕ КРОШКИ -->
+<div class="breadcrumb">
+    <a href="{{ url_for('index') }}">Главная</a>
+    <span>/</span>
+    Поиск
+</div>
+
+<!-- ==============================
+     ФОРМА ПОИСКА
+============================== -->
+<div class="search-page">
+    <div class="search-page-icon">🔍</div>
+    <h1>Поиск новостей</h1>
+    <p>Введите ключевое слово, чтобы найти нужные новости</p>
+
+    <form class="search-form" action="{{ url_for('search_results') }}" method="GET">
+        <input
+            type="text"
+            name="q"
+            placeholder="Например: Казахстан, спорт, бюджет..."
+            autocomplete="off"
+            required
+        >
+        <button type="submit">Найти</button>
+    </form>
+</div>
+
+<!-- ==============================
+     ПОПУЛЯРНЫЕ КАТЕГОРИИ (подсказки)
+============================== -->
+<div style="text-align:center; margin-top: 40px;">
+    <p style="color:#888; font-size:14px; margin-bottom:14px;">Или выберите категорию:</p>
+    <div style="display:flex; flex-wrap:wrap; gap:10px; justify-content:center;">
+        {% for cat in categories %}
+        <a href="{{ url_for('news_by_category', cat_id=cat.id) }}" class="cat-link" style="background:#0d1b2a; color:#f0c040; font-size:14px; padding:8px 20px;">
+            {{ cat.name }}
+        </a>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

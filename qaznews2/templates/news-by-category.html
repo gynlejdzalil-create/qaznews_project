@@ -1,0 +1,52 @@
+{% extends 'layout.html' %}
+{% block title %}{{ category.name }}{% endblock %}
+
+{% block content %}
+
+<div class="breadcrumb">
+    <a href="{{ url_for('index') }}">Главная</a>
+    <span>/</span>
+    <a href="{{ url_for('all_news') }}">Все новости</a>
+    <span>/</span>
+    {{ category.name }}
+</div>
+
+<div class="cat-page-header mb-section">
+    <div class="cat-page-icon">📂</div>
+    <div>
+        <h1>{{ category.name }}</h1>
+        <p>Все новости в категории «{{ category.name }}» — {{ posts|length }} публикаций</p>
+    </div>
+</div>
+
+{% if posts %}
+<div class="news-grid mb-section">
+    {% for post in posts %}
+    <a href="{{ url_for('read_news', post_id=post.id) }}" class="news-card">
+        <div class="news-card-thumb">
+            {% if post.image %}
+            <img src="{{ post.image }}" alt="{{ post.title }}" style="width:100%;height:100%;object-fit:cover;">
+            {% else %}
+            📰
+            {% endif %}
+        </div>
+        <div class="news-card-body">
+            <span class="news-card-cat">{{ post.category_name }}</span>
+            <h3 class="news-card-title">{{ post.title }}</h3>
+            <p class="news-card-excerpt">{{ post.content[:130] }}...</p>
+            <span class="news-card-date">{{ post.created_at[:10] if post.created_at else '—' }}</span>
+            <span class="news-card-link">Читать →</span>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+    <div class="empty-state-icon">📭</div>
+    <h2>В этой категории нет новостей</h2>
+    <p>Пока нет ни одной публикации в категории «{{ category.name }}»</p>
+    <a href="{{ url_for('all_news') }}" class="btn-primary">Все новости</a>
+</div>
+{% endif %}
+
+{% endblock %}

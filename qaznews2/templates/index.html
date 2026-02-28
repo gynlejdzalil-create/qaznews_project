@@ -1,0 +1,90 @@
+{% extends 'layout.html' %}
+{% block title %}Главная страница{% endblock %}
+
+{% block content %}
+
+<section class="hero-section mb-section">
+    <h2 class="section-heading">🔥 Последние новости</h2>
+    <div class="hero-grid">
+
+        {% if latest_posts|length > 0 %}
+        <a href="{{ url_for('read_news', post_id=latest_posts[0].id) }}" class="hero-main">
+            <div class="hero-thumb" style="height: 280px;">
+                {% if latest_posts[0].image %}
+                <img src="{{ latest_posts[0].image }}" alt="{{ latest_posts[0].title }}" style="width:100%;height:100%;object-fit:cover;">
+                {% else %}
+                📰
+                {% endif %}
+            </div>
+            <div class="hero-body">
+                <span class="hero-cat">{{ latest_posts[0].category_name }}</span>
+                <h2 class="hero-title" style="font-size: 20px;">{{ latest_posts[0].title }}</h2>
+                <p class="hero-excerpt">{{ latest_posts[0].content[:160] }}...</p>
+            </div>
+        </a>
+        {% endif %}
+
+        <div style="display: flex; flex-direction: column; gap: 18px;">
+            {% for post in latest_posts[1:4] %}
+            <a href="{{ url_for('read_news', post_id=post.id) }}" class="hero-side">
+                <div class="hero-thumb" style="width: 130px; min-height: 100px; flex-shrink:0;">
+                    {% if post.image %}
+                    <img src="{{ post.image }}" alt="{{ post.title }}" style="width:100%;height:100%;object-fit:cover;">
+                    {% else %}
+                    📰
+                    {% endif %}
+                </div>
+                <div class="hero-body">
+                    <span class="hero-cat">{{ post.category_name }}</span>
+                    <h3 class="hero-title" style="font-size: 14px;">{{ post.title }}</h3>
+                    <p class="hero-excerpt" style="-webkit-line-clamp: 2;">{{ post.content[:100] }}...</p>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+
+    </div>
+</section>
+
+<section class="ads-block mb-section">
+    <h2 class="section-heading">📢 Реклама</h2>
+    <div class="ads-grid">
+        {% for ad in ads %}
+        <a href="{{ ad.link }}" class="ad-card">
+            {% if ad.image %}
+            <div style="width:100%;height:90px;overflow:hidden;border-radius:4px;margin-bottom:10px;">
+                <img src="{{ ad.image }}" alt="{{ ad.title }}" style="width:100%;height:100%;object-fit:cover;opacity:0.65;">
+            </div>
+            {% endif %}
+            <span class="ad-label">Реклама</span>
+            <div class="ad-title">{{ ad.title }}</div>
+            <div class="ad-desc">{{ ad.description }}</div>
+        </a>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="mb-section">
+    <h2 class="section-heading">📌 Читайте также</h2>
+    <div class="news-grid">
+        {% for post in random_posts %}
+        <a href="{{ url_for('read_news', post_id=post.id) }}" class="news-card">
+            <div class="news-card-thumb">
+                {% if post.image %}
+                <img src="{{ post.image }}" alt="{{ post.title }}" style="width:100%;height:100%;object-fit:cover;">
+                {% else %}
+                📰
+                {% endif %}
+            </div>
+            <div class="news-card-body">
+                <span class="news-card-cat">{{ post.category_name }}</span>
+                <h3 class="news-card-title">{{ post.title }}</h3>
+                <p class="news-card-excerpt">{{ post.content[:130] }}...</p>
+                <span class="news-card-date">{{ post.created_at[:10] if post.created_at else '—' }}</span>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</section>
+
+{% endblock %}

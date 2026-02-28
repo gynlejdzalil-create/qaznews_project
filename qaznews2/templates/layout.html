@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QazNews — {% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- ШАПКА -->
+<header class="header">
+    <div class="header-top">
+        <div class="container header-top-inner">
+            <a href="{{ url_for('index') }}" class="logo">
+                <span class="logo-q">Q</span>az<span class="logo-n">N</span>ews
+            </a>
+            <button class="burger-btn" id="burgerBtn">&#9776;</button>
+            <nav class="main-nav" id="mainNav">
+                <a href="{{ url_for('index') }}">Главная</a>
+                <a href="{{ url_for('all_news') }}">Все новости</a>
+                <a href="{{ url_for('search') }}">Поиск</a>
+            </nav>
+        </div>
+    </div>
+    <div class="header-cats">
+        <div class="container cats-inner">
+            {% for cat in categories %}
+            <a href="{{ url_for('news_by_category', cat_id=cat.id) }}" class="cat-link">{{ cat.name }}</a>
+            {% endfor %}
+        </div>
+    </div>
+</header>
+
+<!-- КОНТЕНТ -->
+<div class="page-wrapper">
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+</div>
+
+<!-- ФУТЕР -->
+<footer class="footer">
+    <div class="container footer-inner">
+        <div class="footer-logo">
+            <span class="logo-q">Q</span>az<span class="logo-n">N</span>ews
+        </div>
+        <p class="footer-copy">© 2024 QazNews. Все права защищены.</p>
+        <div class="footer-nav">
+            <a href="{{ url_for('index') }}">Главная</a>
+            <a href="{{ url_for('all_news') }}">Новости</a>
+            <a href="{{ url_for('search') }}">Поиск</a>
+        </div>
+    </div>
+</footer>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
